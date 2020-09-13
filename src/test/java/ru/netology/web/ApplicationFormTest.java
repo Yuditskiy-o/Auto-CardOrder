@@ -32,24 +32,6 @@ public class ApplicationFormTest {
         }
 
         @Test
-        void shouldSubmitRequestIfNameAndSurnameWithUppercase() {
-            form.$(cssSelector("[type='text']")).sendKeys("ОЛЕГ ЮДЫЦКИЙ");
-            form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
-            form.$(cssSelector("[data-test-id=agreement]")).click();
-            form.$(cssSelector("[type='button']")).click();
-            $("[data-test-id=order-success]").shouldHave(Condition.exactText("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время."));
-        }
-
-        @Test
-        void shouldSubmitRequestIfNameAndSurnameWithLowercase() {
-            form.$(cssSelector("[type='text']")).sendKeys("олег юдыцкий");
-            form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
-            form.$(cssSelector("[data-test-id=agreement]")).click();
-            form.$(cssSelector("[type='button']")).click();
-            $("[data-test-id=order-success]").shouldHave(Condition.exactText("Ваша заявка успешно отправлена! Наш менеджер свяжется с вами в ближайшее время."));
-        }
-
-        @Test
         void shouldSubmitRequestIfSurnameWithHyphen() {
             form.$(cssSelector("[type='text']")).sendKeys("Олег Петров-Водкин");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
@@ -73,7 +55,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
         }
 
         @Test
@@ -82,7 +64,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[data-test-id=phone] input")).sendKeys("");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
         }
 
         @Test
@@ -90,7 +72,25 @@ public class ApplicationFormTest {
             form.$(cssSelector("[data-test-id=name] input")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[data-test-id=phone] input")).sendKeys("+79137049918");
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .checkbox__text").shouldHave(Condition.text("Я соглашаюсь с условиями обработки"));
+            $("[data-test-id=agreement].input_invalid .checkbox__text").shouldHave(Condition.text("Я соглашаюсь с условиями обработки"));
+        }
+
+        @Test
+        void shouldNotSubmitRequestIfNameAndSurnameWithUppercase() {
+            form.$(cssSelector("[type='text']")).sendKeys("ОЛЕГ ЮДЫЦКИЙ");
+            form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
+            form.$(cssSelector("[data-test-id=agreement]")).click();
+            form.$(cssSelector("[type='button']")).click();
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+        }
+
+        @Test
+        void shouldNotSubmitRequestIfNameAndSurnameWithLowercase() {
+            form.$(cssSelector("[type='text']")).sendKeys("олег юдыцкий");
+            form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
+            form.$(cssSelector("[data-test-id=agreement]")).click();
+            form.$(cssSelector("[type='button']")).click();
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
         @Test
@@ -99,7 +99,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
         }
 
         @Test
@@ -108,7 +108,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
         @Test
@@ -117,7 +117,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
         @Test
@@ -126,7 +126,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
+            $("[data-test-id=name].input_invalid .input__sub").shouldHave(Condition.exactText("Имя и Фамилия указаные неверно. Допустимы только русские буквы, пробелы и дефисы."));
         }
 
         @Test
@@ -135,7 +135,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+7");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -144,7 +144,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+7913704991");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -153,7 +153,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -162,7 +162,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+791370499181");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -171,7 +171,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("+апыавыаывп");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
 
         @Test
@@ -180,7 +180,7 @@ public class ApplicationFormTest {
             form.$(cssSelector("[type='tel']")).sendKeys("№%@##$");
             form.$(cssSelector("[data-test-id=agreement]")).click();
             form.$(cssSelector("[type='button']")).click();
-            $(".input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
+            $("[data-test-id=phone].input_invalid .input__sub").shouldHave(Condition.exactText("Телефон указан неверно. Должно быть 11 цифр, например, +79012345678."));
         }
     }
 }
