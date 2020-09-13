@@ -2,20 +2,28 @@ package ru.netology.web;
 
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.SelenideElement;
+import lombok.Data;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import static com.codeborne.selenide.Selenide.*;
 import static org.openqa.selenium.By.cssSelector;
 
+@Data
 public class ApplicationFormTest {
+    private SelenideElement form;
+
+    @BeforeEach
+    void setup(){
+        open("http://localhost:9999");
+        form = $("[action]");
+    }
 
     @Nested
     public class PositiveTestCases {
         @Test
         void shouldSubmitRequestIfDataFullyValid() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -25,8 +33,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldSubmitRequestIfNameAndSurnameWithUppercase() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("ОЛЕГ ЮДЫЦКИЙ");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -36,8 +42,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldSubmitRequestIfNameAndSurnameWithLowercase() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("олег юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -47,8 +51,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldSubmitRequestIfSurnameWithHyphen() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Петров-Водкин");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -61,16 +63,12 @@ public class ApplicationFormTest {
     public class NegativeTestCases {
         @Test
         void shouldNotSubmitIfFormIsEmpty() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='button']")).click();
             $(".input_invalid .input__sub").shouldHave(Condition.exactText("Поле обязательно для заполнения"));
         }
 
         @Test
         void shouldNotSubmitIfNameIsEmpty() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -80,8 +78,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitIfPhoneIsEmpty() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[data-test-id=name] input")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[data-test-id=phone] input")).sendKeys("");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -91,8 +87,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitIfAgreementIsEmpty() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[data-test-id=name] input")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[data-test-id=phone] input")).sendKeys("+79137049918");
             form.$(cssSelector("[type='button']")).click();
@@ -101,8 +95,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfOnlyName() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -112,8 +104,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfNameAndSurname30Letters() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Фффффффффффффффффффффффффффффф Аааааааааааааааааааааааааааааа");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -123,8 +113,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfNameAndSurnameInLatin() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Oleg Yuditskiy");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -134,8 +122,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfNameAndSurnameContainsInvalidSymbols() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("@#@$");
             form.$(cssSelector("[type='tel']")).sendKeys("+79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -145,8 +131,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfPhoneIs1Number() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("+7");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -156,8 +140,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfPhoneIs10Numbers() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("+7913704991");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -167,8 +149,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfPhoneWithoutPlus() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("79137049918");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -178,8 +158,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfPhoneIs12Numbers() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("+791370499181");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -189,8 +167,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfPhoneIsLetters() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("+апыавыаывп");
             form.$(cssSelector("[data-test-id=agreement]")).click();
@@ -200,8 +176,6 @@ public class ApplicationFormTest {
 
         @Test
         void shouldNotSubmitRequestIfPhoneContainsSymbols() {
-            open("http://localhost:9999");
-            SelenideElement form = $("[action]");
             form.$(cssSelector("[type='text']")).sendKeys("Олег Юдыцкий");
             form.$(cssSelector("[type='tel']")).sendKeys("№%@##$");
             form.$(cssSelector("[data-test-id=agreement]")).click();
